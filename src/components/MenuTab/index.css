@@ -1,0 +1,20 @@
+.tab-btn {
+  height: 100%;
+  padding: none;
+  outline: none;
+  cursor: pointer;
+  color: grey;
+  font-size: 15px;
+  font-weight: 800;
+  border:none;
+  background-color: transparent;
+}
+
+.active-btn {
+  color: red;
+  border-bottom: 2px solid red;
+}
+
+.list-item {
+  height: 100%;
+}

@@ -1,0 +1,27 @@
+.app-bg-container {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+}
+
+.tab-container {
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+  padding-left: 0px;
+  height: 100px;
+  padding: 10px;
+  justify-content: space-between;
+}
+
+.items-list {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  padding-left: 0px;
+  height: 100px;
+  padding: 10px;
+  justify-content: space-around;
+  margin-top: 0px;
+}
