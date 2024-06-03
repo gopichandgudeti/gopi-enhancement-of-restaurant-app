@@ -1,14 +1,25 @@
 import {Component} from 'react'
+import Loader from 'react-loader-spinner'
 import MenuTab from '../MenuTab'
 import Dish from '../Dish'
+import Header from '../Header'
 
 import './index.css'
+
+const menu = [
+  {menuCategory: 'Salads and Soup', menuCategoryId: '11'},
+  {menuCategory: 'From The Barnyard', menuCategoryId: '12'},
+  {menuCategory: 'From the Hen House', menuCategoryId: '13'},
+  {menuCategory: 'Fresh From The Sea', menuCategoryId: '14'},
+  {menuCategory: 'Biryani', menuCategoryId: '15'},
+  {menuCategory: 'Fast Food', menuCategoryId: '17'},
+]
 
 const apiStatusConstants = {
   initial: 'INITIAL',
   inProgress: 'IN_PROGRESS',
   success: 'SUCCESS',
-  failue: 'FAILURE',
+  failure: 'FAILURE',
 }
 
 class Home extends Component {
@@ -16,7 +27,8 @@ class Home extends Component {
     total: [],
     displaydata: [],
     apiStatus: apiStatusConstants.initial,
-    activeTabId: '11',
+    activeTabId: '',
+    cartList: [],
   }
 
   componentDidMount() {
@@ -26,44 +38,53 @@ class Home extends Component {
   getMenuCard = async () => {
     this.setState({apiStatus: apiStatusConstants.inProgress})
     const apiUrl =
-      'https://run.mocky.io/v3/77a7e71b-804a-4fbd-822c-3e365d3482cc'
+      'https://run.mocky.io/v3/72562bef-1d10-4cf5-bd26-8b0c53460a8e'
 
     const response = await fetch(apiUrl)
-    const data = await response.json()
-    const array = data.map(each => ({
-      tableMenuList: each.table_menu_list,
-      restaurentName: each.restaurant_name,
-    }))
+    if (response.ok) {
+      const data = await response.json()
+      const array = data.map(each => ({
+        tableMenuList: each.table_menu_list,
+        restaurentName: each.restaurant_name,
+      }))
 
-    const totalDetails = array[0]
-    const {tableMenuList, restaurentName} = totalDetails
+      const totalDetails = array[0]
+      const {tableMenuList, restaurentName} = totalDetails
 
-    const format = tableMenuList.map(each => ({
-      categoryDishes: each.category_dishes.map(eachCategory => ({
-        dishId: eachCategory.dish_id,
-        dishName: eachCategory.dish_name,
-        dishPrice: eachCategory.dish_price,
-        dishImage: eachCategory.dish_image,
-        dishCurrency: eachCategory.dish_currency,
-        dishCalories: eachCategory.dish_calories,
-        dishDescription: eachCategory.dish_description,
-        dishAvailability: eachCategory.dish_Availability,
-        dishType: eachCategory.dish_type,
-        nexturl: eachCategory.nexturl,
-        addonCat: eachCategory.addonCat,
-      })),
-      menuCategory: each.menu_category,
-      menuCategoryId: each.menu_category_id,
-      menuCategoryImage: each.menu_category_image,
-      nexturl: each.nexturl,
-    }))
+      const format = tableMenuList.map(each => ({
+        categoryDishes: each.category_dishes.map(eachCategory => ({
+          dishId: eachCategory.dish_id,
+          dishName: eachCategory.dish_name,
+          dishPrice: eachCategory.dish_price,
+          dishImage: eachCategory.dish_image,
+          dishCurrency: eachCategory.dish_currency,
+          dishCalories: eachCategory.dish_calories,
+          dishDescription: eachCategory.dish_description,
+          dishAvailability: eachCategory.dish_Availability,
+          dishType: eachCategory.dish_type,
+          nexturl: eachCategory.nexturl,
+          addonCat: eachCategory.addonCat,
+        })),
+        menuCategory: each.menu_category,
+        menuCategoryId: each.menu_category_id,
+        menuCategoryImage: each.menu_category_image,
+        nexturl: each.nexturl,
+      }))
 
-    this.setState({total: format})
-    const single = format[0]
-    const {categoryDishes} = single
-    this.setState({displaydata: categoryDishes})
+      // this.setState({total: format})
+      // const single = format[0]
+      // const {categoryDishes} = single
+      this.setState({
+        apiStatus: apiStatusConstants.success,
+        // displaydata: categoryDishes,
+        total: format,
+        activeTabId: format[0].menuCategoryId,
+      })
+    } else {
+      this.setState({apiStatus: apiStatusConstants.failure})
+    }
 
-    /*const updatedData3 = updatedData2.tableMenuList.map(eachType => ({
+    /* const updatedData3 = updatedData2.tableMenuList.map(eachType => ({
       menuCategory: eachType.menu_category,
       menuCategoryId: eachType.menu_category_id,
       menuCategoryImage: eachType.menu_category_image,
@@ -104,18 +125,59 @@ class Home extends Component {
     this.setState({activeTabId: id})
   }
 
-  render() {
-    const {displaydata, apiStatus, total, activeTabId} = this.state
+  addItemToCart = dish => {
+    const {cartList} = this.state
+    const isAlreadyExists = cartList.find(item => item.dishId === dish.dishId)
+    if (!isAlreadyExists) {
+      const newDish = {...dish, quantity: 1}
+      this.setState(prev => ({cartList: [...prev.cartList, newDish]}))
+    } else {
+      this.setState(prev => ({
+        cartList: prev.cartList.map(item =>
+          item.dishId === dish.dishId
+            ? {...item, quantity: item.quantity + 1}
+            : item,
+        ),
+      }))
+    }
+  }
+
+  removeItemFromCart = dish => {
+    const {cartList} = this.state
+    const isAlreadyExists = cartList.find(item => item.dishId === dish.dishId)
+    if (isAlreadyExists) {
+      this.setState(prev => ({
+        cartList: prev.cartList
+          .map(item =>
+            item.dishId === dish.dishId
+              ? {...item, quantity: item.quantity - 1}
+              : item,
+          )
+          .filter(item => item.quantity > 0),
+      }))
+    }
+  }
+
+  renderLoadingView = () => (
+    <div className="loader-container" data-testId="loader">
+      <Loader type="ThreeDots" color="ffffff" height="50" width="50" />
+    </div>
+  )
+
+  renderFailureView = () => <p>Not Found</p>
+
+  renderSuccessView = () => {
+    const {total, activeTabId, cartList} = this.state
     const filteredMenuCardList = total.filter(
       eachCategory => eachCategory.menuCategoryId === activeTabId,
     )
 
-    /*const single = filteredMenuCardList[0]
-    const {categoryDishes} = single
-    console.log(categoryDishes)*/
+    console.log(filteredMenuCardList)
+    const [{categoryDishes}] = filteredMenuCardList
+    console.log(categoryDishes)
 
     return (
-      <div className="app-bg-container">
+      <>
         <ul className="tab-container">
           {total.map(eachType => (
             <MenuTab
@@ -127,10 +189,42 @@ class Home extends Component {
           ))}
         </ul>
         <ul className="items-list">
-          {displaydata.map(eachDish => (
-            <Dish dishData={eachDish} key={eachDish.dishId} />
+          {categoryDishes.map(eachDish => (
+            <Dish
+              dishData={eachDish}
+              key={eachDish.dishId}
+              onAddToCart={this.addItemToCart}
+              onRemoveFromCart={this.removeItemFromCart}
+              cartItems={cartList}
+            />
           ))}
         </ul>
+      </>
+    )
+  }
+
+  renderRestaurentView = () => {
+    const {apiStatus} = this.state
+
+    switch (apiStatus) {
+      case apiStatusConstants.inProgress:
+        return this.renderLoadingView()
+      case apiStatusConstants.failure:
+        return this.renderFailureView()
+      case apiStatusConstants.success:
+        return this.renderSuccessView()
+      default:
+        return null
+    }
+  }
+
+  render() {
+    const {activeTabId, cartList} = this.state
+
+    return (
+      <div className="app-bg-container">
+        <Header cartItems={cartList} />
+        {this.renderRestaurentView()}
       </div>
     )
   }

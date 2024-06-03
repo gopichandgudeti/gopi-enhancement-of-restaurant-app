@@ -17,8 +17,8 @@ const MenuTab = props => {
   const activeButton = isActive ? 'active-btn' : ''
 
   return (
-    <li className="list-item">
-      <button className={`tab-btn ${activeButton}`} onClick={onClickTabItem}>
+    <li className="list-item" key={menuCategoryId} onClick={onClickTabItem}>
+      <button type="button" className={`tab-btn ${activeButton}`}>
         {menuCategory}
       </button>
     </li>
