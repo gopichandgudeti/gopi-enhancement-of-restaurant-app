@@ -29,6 +29,7 @@ class Home extends Component {
     apiStatus: apiStatusConstants.initial,
     activeTabId: '',
     cartList: [],
+    name: '',
   }
 
   componentDidMount() {
@@ -79,6 +80,7 @@ class Home extends Component {
         // displaydata: categoryDishes,
         total: format,
         activeTabId: format[0].menuCategoryId,
+        name: restaurentName,
       })
     } else {
       this.setState({apiStatus: apiStatusConstants.failure})
@@ -167,7 +169,7 @@ class Home extends Component {
   renderFailureView = () => <p>Not Found</p>
 
   renderSuccessView = () => {
-    const {total, activeTabId, cartList} = this.state
+    const {total, activeTabId, cartList, name} = this.state
     const filteredMenuCardList = total.filter(
       eachCategory => eachCategory.menuCategoryId === activeTabId,
     )
@@ -178,6 +180,7 @@ class Home extends Component {
 
     return (
       <>
+        <Header cartItems={cartList} name={name} />
         <ul className="tab-container">
           {total.map(eachType => (
             <MenuTab
@@ -219,14 +222,9 @@ class Home extends Component {
   }
 
   render() {
-    const {activeTabId, cartList} = this.state
+    const {activeTabId, cartList, name} = this.state
 
-    return (
-      <div className="app-bg-container">
-        <Header cartItems={cartList} />
-        {this.renderRestaurentView()}
-      </div>
-    )
+    return <div className="app-bg-container">{this.renderRestaurentView()}</div>
   }
 }
 
