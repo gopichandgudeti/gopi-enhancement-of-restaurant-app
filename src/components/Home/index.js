@@ -6,15 +6,6 @@ import Header from '../Header'
 
 import './index.css'
 
-const menu = [
-  {menuCategory: 'Salads and Soup', menuCategoryId: '11'},
-  {menuCategory: 'From The Barnyard', menuCategoryId: '12'},
-  {menuCategory: 'From the Hen House', menuCategoryId: '13'},
-  {menuCategory: 'Fresh From The Sea', menuCategoryId: '14'},
-  {menuCategory: 'Biryani', menuCategoryId: '15'},
-  {menuCategory: 'Fast Food', menuCategoryId: '17'},
-]
-
 const apiStatusConstants = {
   initial: 'INITIAL',
   inProgress: 'IN_PROGRESS',
