@@ -2,13 +2,7 @@ import './index.css'
 
 const MenuTab = props => {
   const {menuData, isActive, onChangeTab} = props
-  const {
-    menuCategory,
-    menuCategoryId,
-    menuCategoryImage,
-    nexturl,
-    categoryDishes,
-  } = menuData
+  const {menuCategory, menuCategoryId} = menuData
 
   const onClickTabItem = () => {
     onChangeTab(menuCategoryId)

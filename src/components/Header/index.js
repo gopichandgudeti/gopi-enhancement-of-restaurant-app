@@ -1,5 +1,3 @@
-import {BsCart3} from 'react-icons/bs'
-
 import './index.css'
 
 const Header = props => {

@@ -16,7 +16,6 @@ const apiStatusConstants = {
 class Home extends Component {
   state = {
     total: [],
-    displaydata: [],
     apiStatus: apiStatusConstants.initial,
     activeTabId: '',
     cartList: [],
@@ -213,8 +212,6 @@ class Home extends Component {
   }
 
   render() {
-    const {activeTabId, cartList, name} = this.state
-
     return <div className="app-bg-container">{this.renderRestaurentView()}</div>
   }
 }
