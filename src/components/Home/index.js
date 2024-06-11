@@ -3,6 +3,7 @@ import Loader from 'react-loader-spinner'
 import MenuTab from '../MenuTab'
 import Dish from '../Dish'
 import Header from '../Header'
+import CartContext from '../../context/CartContext'
 
 import './index.css'
 
@@ -18,7 +19,6 @@ class Home extends Component {
     total: [],
     apiStatus: apiStatusConstants.initial,
     activeTabId: '',
-    cartList: [],
     name: '',
   }
 
@@ -117,39 +117,6 @@ class Home extends Component {
     this.setState({activeTabId: id})
   }
 
-  addItemToCart = dish => {
-    const {cartList} = this.state
-    const isAlreadyExists = cartList.find(item => item.dishId === dish.dishId)
-    if (!isAlreadyExists) {
-      const newDish = {...dish, quantity: 1}
-      this.setState(prev => ({cartList: [...prev.cartList, newDish]}))
-    } else {
-      this.setState(prev => ({
-        cartList: prev.cartList.map(item =>
-          item.dishId === dish.dishId
-            ? {...item, quantity: item.quantity + 1}
-            : item,
-        ),
-      }))
-    }
-  }
-
-  removeItemFromCart = dish => {
-    const {cartList} = this.state
-    const isAlreadyExists = cartList.find(item => item.dishId === dish.dishId)
-    if (isAlreadyExists) {
-      this.setState(prev => ({
-        cartList: prev.cartList
-          .map(item =>
-            item.dishId === dish.dishId
-              ? {...item, quantity: item.quantity - 1}
-              : item,
-          )
-          .filter(item => item.quantity > 0),
-      }))
-    }
-  }
-
   renderLoadingView = () => (
     <div className="loader-container" data-testId="loader">
       <Loader type="ThreeDots" color="ffffff" height="50" width="50" />
@@ -159,7 +126,7 @@ class Home extends Component {
   renderFailureView = () => <p>Not Found</p>
 
   renderSuccessView = () => {
-    const {total, activeTabId, cartList, name} = this.state
+    const {total, activeTabId, name} = this.state
     const filteredMenuCardList = total.filter(
       eachCategory => eachCategory.menuCategoryId === activeTabId,
     )
@@ -169,30 +136,32 @@ class Home extends Component {
     console.log(categoryDishes)
 
     return (
-      <>
-        <Header cartItems={cartList} name={name} />
-        <ul className="tab-container">
-          {total.map(eachType => (
-            <MenuTab
-              menuData={eachType}
-              key={eachType.menuCategoryId}
-              onChangeTab={this.onChangeTab}
-              isActive={eachType.menuCategoryId === activeTabId}
-            />
-          ))}
-        </ul>
-        <ul className="items-list">
-          {categoryDishes.map(eachDish => (
-            <Dish
-              dishData={eachDish}
-              key={eachDish.dishId}
-              onAddToCart={this.addItemToCart}
-              onRemoveFromCart={this.removeItemFromCart}
-              cartItems={cartList}
-            />
-          ))}
-        </ul>
-      </>
+      <CartContext.Consumer>
+        {value => {
+          const {cartList} = value
+
+          return (
+            <>
+              <Header name={name} />
+              <ul className="tab-container">
+                {total.map(eachType => (
+                  <MenuTab
+                    menuData={eachType}
+                    key={eachType.menuCategoryId}
+                    onChangeTab={this.onChangeTab}
+                    isActive={eachType.menuCategoryId === activeTabId}
+                  />
+                ))}
+              </ul>
+              <ul className="items-list">
+                {categoryDishes.map(eachDish => (
+                  <Dish dishData={eachDish} key={eachDish.dishId} />
+                ))}
+              </ul>
+            </>
+          )
+        }}
+      </CartContext.Consumer>
     )
   }
 
@@ -212,7 +181,7 @@ class Home extends Component {
   }
 
   render() {
-    return <div className="app-bg-container">{this.renderRestaurentView()}</div>
+    return <>{this.renderRestaurentView()}</>
   }
 }
 

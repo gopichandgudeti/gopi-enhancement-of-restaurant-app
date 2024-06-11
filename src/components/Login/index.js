@@ -1,6 +1,6 @@
 import {Component} from 'react'
-import {Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
+import {Redirect} from 'react-router-dom'
 
 import './index.css'
 
@@ -22,6 +22,7 @@ class Login extends Component {
 
   onSubmitSuccess = jwtToken => {
     const {history} = this.props
+
     Cookies.set('jwt_token', jwtToken, {expires: 30})
     history.replace('/')
   }
@@ -33,7 +34,7 @@ class Login extends Component {
   onSubmitForm = async event => {
     event.preventDefault()
     const {userName, password} = this.state
-    const userDetails = {userName, password}
+    const userDetails = {username: userName, password}
     const url = 'https://apis.ccbp.in/login'
     const options = {
       method: 'POST',
@@ -85,6 +86,7 @@ class Login extends Component {
   render() {
     const {errMsg, showErrMsg} = this.state
     const token = Cookies.get('jwt_token')
+
     if (token !== undefined) {
       return <Redirect to="/" />
     }
@@ -93,10 +95,10 @@ class Login extends Component {
       <div className="login-bg-container">
         <div className="login-form-bg-container">
           <form className="form-container" onSubmit={this.onSubmitForm}>
-            {this.renderUserNameField()}
-            {this.renderPasswordField()}
+            <div>{this.renderUserNameField()}</div>
+            <div>{this.renderPasswordField()}</div>
             <button type="submit">Login</button>
-            {showErrMsg && <p>{errMsg}</p>}
+            {showErrMsg && <p>*{errMsg}</p>}
           </form>
         </div>
       </div>

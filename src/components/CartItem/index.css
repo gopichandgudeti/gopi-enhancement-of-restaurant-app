@@ -1,0 +1,28 @@
+.cart-item-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  list-style-type: none;
+  background-color: #ffffff;
+  border: 1px solid grey;
+  border-radius: 10px;
+  height: 300px;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.dish-image {
+  height: 150px;
+  width: 150px;
+}
+
+.incre-decre-btns {
+  background-color: transparent;
+  padding: 0px;
+  color: #ffffff;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  height: 100%;
+}
