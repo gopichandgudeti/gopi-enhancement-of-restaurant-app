@@ -33,7 +33,6 @@ class Dish extends Component {
       dishCalories,
       dishDescription,
       dishAvailability,
-      dishType,
       nexturl,
       addonCat,
     } = dishData
@@ -48,16 +47,14 @@ class Dish extends Component {
     return (
       <CartContext.Consumer>
         {value => {
-          const {addCarItem} = value
+          const {addCartItem} = value
 
-          const onAddToCart = () => {
-            addCarItem(dishData, itemQuantity)
-          }
+          const onAddToCart = () => addCartItem(dishData, itemQuantity)
 
           return (
             <li className="dish-item">
               <div className="dish-details-container">
-                <img src={nexturl} className="next-img" alt="nxt" />
+                <img src={dishImage} className="next-img" alt="dish" />
                 <div className="dish-description-container">
                   <h1 className="dish-name">{dishName}</h1>
                   <p className="dish-price">

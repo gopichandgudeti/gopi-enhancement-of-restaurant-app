@@ -3,7 +3,6 @@ import Loader from 'react-loader-spinner'
 import MenuTab from '../MenuTab'
 import Dish from '../Dish'
 import Header from '../Header'
-import CartContext from '../../context/CartContext'
 
 import './index.css'
 
@@ -136,32 +135,24 @@ class Home extends Component {
     console.log(categoryDishes)
 
     return (
-      <CartContext.Consumer>
-        {value => {
-          const {cartList} = value
-
-          return (
-            <>
-              <Header name={name} />
-              <ul className="tab-container">
-                {total.map(eachType => (
-                  <MenuTab
-                    menuData={eachType}
-                    key={eachType.menuCategoryId}
-                    onChangeTab={this.onChangeTab}
-                    isActive={eachType.menuCategoryId === activeTabId}
-                  />
-                ))}
-              </ul>
-              <ul className="items-list">
-                {categoryDishes.map(eachDish => (
-                  <Dish dishData={eachDish} key={eachDish.dishId} />
-                ))}
-              </ul>
-            </>
-          )
-        }}
-      </CartContext.Consumer>
+      <>
+        <Header name={name} />
+        <ul className="tab-container">
+          {total.map(eachType => (
+            <MenuTab
+              menuData={eachType}
+              key={eachType.menuCategoryId}
+              onChangeTab={this.onChangeTab}
+              isActive={eachType.menuCategoryId === activeTabId}
+            />
+          ))}
+        </ul>
+        <ul className="items-list">
+          {categoryDishes.map(eachDish => (
+            <Dish dishData={eachDish} key={eachDish.dishId} />
+          ))}
+        </ul>
+      </>
     )
   }
 
