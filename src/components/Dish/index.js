@@ -14,8 +14,9 @@ class Dish extends Component {
 
   onDecrease = () => {
     const {itemQuantity} = this.state
-    if (itemQuantity > 1) {
+    if (itemQuantity >= 1) {
       this.setState(prevState => ({itemQuantity: prevState.itemQuantity - 1}))
+      console.log(itemQuantity)
     }
   }
 
@@ -86,7 +87,7 @@ class Dish extends Component {
                       </div>
                       {itemQuantity >= 1 && (
                         <button type="button" onClick={onAddToCart}>
-                          Add to cart
+                          ADD TO CART
                         </button>
                       )}
                     </>

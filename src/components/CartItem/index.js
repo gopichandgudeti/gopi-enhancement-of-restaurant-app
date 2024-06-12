@@ -10,20 +10,9 @@ const CartItem = props => (
         removeCartItem,
       } = value
       const {data} = props
-      const {
-        dishId,
-        dishName,
-        dishPrice,
-        dishImage,
-        dishCurrency,
-        dishCalories,
-        dishDescription,
-        dishAvailability,
-        dishType,
-        nexturl,
-        addonCat,
-        quantity,
-      } = data
+      const {dishId, dishName, dishPrice, dishImage, quantity} = data
+
+      const itemPrice = dishPrice * quantity
 
       const onIncrease = () => {
         incrementCartItemQuantity(data)
@@ -40,15 +29,14 @@ const CartItem = props => (
       return (
         <li className="cart-item-container">
           <img src={dishImage} alt={dishName} className="dish-image" />
-          <h1>{dishName}</h1>
-          <p>
-            {dishPrice}*{quantity}
-          </p>
+          <div>
+            <p>{dishName}</p>
+            <p>{itemPrice}</p>
+          </div>
           <div className="btn-container">
             <button
               type="button"
               className="incre-decre-btns"
-              key={dishId}
               onClick={onDecrease}
             >
               -
@@ -57,14 +45,13 @@ const CartItem = props => (
             <button
               type="button"
               className="incre-decre-btns"
-              key={dishId}
               onClick={onIncrease}
             >
               +
             </button>
           </div>
           <button type="button" onClick={onClickRemoveItem}>
-            Remeve
+            Remove
           </button>
         </li>
       )

@@ -8,3 +8,33 @@
   padding-right: 20px;
   box-shadow: 0px 3px 3px 0px;
 }
+
+.my-orders-text {
+  display: none;
+  font-family: 'Roboto';
+  font-size: 15px;
+}
+
+@media screen and (min-width: 768px) {
+  .my-orders-text {
+    display: block;
+    font-family: 'Roboto';
+    font-size: 15px;
+  }
+}
+
+.cart-icon {
+  display: block;
+}
+
+@media screen and (min-width: 768px) {
+  .cart-icon {
+    display: none;
+  }
+}
+
+.buttons-icon-container {
+  display: flex;
+  flex-direction: row;
+  width:30%;
+}

@@ -1,4 +1,6 @@
 import {Link, withRouter} from 'react-router-dom'
+import {IoCartOutline} from 'react-icons/io5'
+
 import Cookies from 'js-cookie'
 import CartContext from '../../context/CartContext'
 
@@ -22,10 +24,17 @@ const Header = props => {
             <Link to="/">
               <h1>{name}</h1>
             </Link>
-            <div>
-              <Link to="/Cart">
-                <p>My Orders {cartList.length}</p>
+            <div className="buttons-icon-container">
+              <Link to="/Cart" className="my-orders-text">
+                <p>My Orders </p>
               </Link>
+              <Link to="/Cart" className="cart-icon">
+                <button type="button">
+                  <IoCartOutline size="30" color="3616e7c" aia-label="cart" />
+                </button>
+                <p>{cartList.length}</p>
+              </Link>
+              
               <button type="button" onClick={onClickLogout}>
                 Logout
               </button>

@@ -54,13 +54,13 @@ class Login extends Component {
 
     return (
       <>
-        <label htmlFor="username">USERNAME</label>
+        <label htmlFor='username'>USERNAME</label>
         <input
-          type="text"
-          id="username"
+          type='text'
+          id='username'
           value={userName}
           onChange={this.onChangeUsername}
-          placeholder="Username"
+          placeholder='Username'
         />
       </>
     )
@@ -71,13 +71,13 @@ class Login extends Component {
 
     return (
       <>
-        <label htmlFor="password">PASSWORD</label>
+        <label htmlFor='password'>PASSWORD</label>
         <input
-          type="password"
-          id="password"
+          type='password'
+          id='password'
           value={password}
           onChange={this.onChangePassword}
-          placeholder="Password"
+          placeholder='Password'
         />
       </>
     )
@@ -88,16 +88,16 @@ class Login extends Component {
     const token = Cookies.get('jwt_token')
 
     if (token !== undefined) {
-      return <Redirect to="/" />
+      return <Redirect to='/' />
     }
 
     return (
-      <div className="login-bg-container">
-        <div className="login-form-bg-container">
-          <form className="form-container" onSubmit={this.onSubmitForm}>
+      <div className='login-bg-container'>
+        <div className='login-form-bg-container'>
+          <form className='form-container' onSubmit={this.onSubmitForm}>
             <div>{this.renderUserNameField()}</div>
             <div>{this.renderPasswordField()}</div>
-            <button type="submit">Login</button>
+            <button type='submit'>Login</button>
             {showErrMsg && <p>*{errMsg}</p>}
           </form>
         </div>
